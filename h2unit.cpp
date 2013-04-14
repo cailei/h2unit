@@ -1083,7 +1083,7 @@ public:
       }
    }
 
-   void run()
+   int run()
    {
       long total_starts = __milliseconds();
       if (cfg._random) reorder();
@@ -1120,6 +1120,8 @@ public:
          listener.on_case_endup(100.0 * (case_passed + case_failed + case_ignore + case_filter) / case_count);
       }
       listener.on_task_endup(case_failed, case_passed, case_ignore, case_filter, case_count, check_count, __milliseconds() - total_starts);
+       
+       return case_failed > 0 ? 1 : 0;
    }
 
    bool enough(size_t size)
@@ -1509,7 +1511,6 @@ int main(int argc, char** argv)
       if (strstr(argv[1], "h")) h2unit_task::O()->listener.attach(&h2unit_task::O()->html_listener);
       if (strstr(argv[1], "x")) h2unit_task::O()->listener.attach(&h2unit_task::O()->xml_listener);
    }
-   h2unit_task::O()->run();
-   return 0;
+   return h2unit_task::O()->run();
 }
 
